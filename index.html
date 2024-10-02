@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: rgba(255, 255, 255, 0.6);
+            color: #333;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #2a9d8f;
+        }
+        select {
+            width: 90%;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1.1rem;
+        }
+        .match-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        .match-list li {
+            padding: 10px;
+            background-color: #e9c46a;
+            cursor: pointer;
+            margin: 5px 0;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .match-list li:hover {
+            background-color: #f4a261;
+        }
+        .match-summary {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 20px auto;
+            display: none; /* Cacher par défaut */
+        }
+    </style>
+    <title>Comparateur de Matchs de Football</title>
+</head>
+<body>
+
+    <h2>Comparateur de Matchs de Football</h2>
+
+    <select id="team1">
+        <option value="">Sélectionner une équipe</option>
+        <option value="France">France</option>
+        <option value="Brésil">Brésil</option>
+        <option value="Allemagne">Allemagne</option>
+        <option value="Argentine">Argentine</option>
+        <option value="Italie">Italie</option>
+        <option value="Espagne">Espagne</option>
+        <option value="FC Barcelona">FC Barcelona</option>
+        <option value="Real Madrid">Real Madrid</option>
+        <option value="Manchester City">Manchester City</option>
+        <option value="Bayern Munich">Bayern Munich</option>
+        <option value="Liverpool">Liverpool</option>
+        <option value="Chelsea">Chelsea</option>
+        <!-- Ajoutez d'autres équipes si nécessaire -->
+    </select>
+
+    <select id="team2">
+        <option value="">Sélectionner une équipe</option>
+        <option value="France">France</option>
+        <option value="Brésil">Brésil</option>
+        <option value="Allemagne">Allemagne</option>
+        <option value="Argentine">Argentine</option>
+        <option value="Italie">Italie</option>
+        <option value="Espagne">Espagne</option>
+        <option value="FC Barcelona">FC Barcelona</option>
+        <option value="Real Madrid">Real Madrid</option>
+        <option value="Manchester City">Manchester City</option>
+        <option value="Bayern Munich">Bayern Munich</option>
+        <option value="Liverpool">Liverpool</option>
+        <option value="Chelsea">Chelsea</option>
+        <!-- Ajoutez d'autres équipes si nécessaire -->
+    </select>
+
+    <div class="match-list" id="match-list"></div>
+
+    <div class="match-summary" id="match-summary">
+        <h3>Détails du Match</h3>
+        <div id="summary-content"></div>
+    </div>
+
+    <script>
+        // Remplace le lien ci-dessous par le lien brut vers ton fichier JSON sur GitHub
+        const jsonUrl = 'https://raw.githubusercontent.com/ton-utilisateur/football-results/main/football_results.json';
+
+        fetch(jsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                const team1Select = document.getElementById('team1');
+                const team2Select = document.getElementById('team2');
+                const matchListDiv = document.getElementById('match-list');
+                
+                // Remplir la liste des équipes (simplifié ici)
+                const teams = [...new Set(data.map(match => [match.equipe1, match.equipe2]).flat())];
+                
+                teams.forEach(team => {
+                    const option1 = document.createElement('option');
+                    option1.value = team;
+                    option1.textContent = team;
+                    team1Select.appendChild(option1);
+                    
+                    const option2 = document.createElement('option');
+                    option2.value = team;
+                    option2.textContent = team;
+                    team2Select.appendChild(option2);
+                });
+
+                // Mettre à jour la liste des matchs
+                function updateMatchList() {
+                    const team1 = team1Select.value;
+                    const team2 = team2Select.value;
+                    matchListDiv.innerHTML = ''; // Réinitialiser la liste
+
+                    if (team1 && team2) {
+                        const matches = data.filter(match => (match.equipe1 === team1 && match.equipe2 === team2) || (match.equipe1 === team2 && match.equipe2 === team1));
+                        
+                        matches.forEach(match => {
+                            const matchItem = document.createElement('li');
+                            matchItem.textContent = `${match.date} - ${match.score}`;
+                            matchItem.onclick = () => showMatchSummary(match);
+                            matchListDiv.appendChild(matchItem);
+                        });
+                    }
+                }
+
+                // Afficher le résumé du match
+                function showMatchSummary(match) {
+                    const summaryDiv = document.getElementById('summary-content');
+                    summaryDiv.innerHTML = `
+                        <p>Date : ${match.date}</p>
+                        <p>Score : ${match.score}</p>
+                        <p>Buteurs : ${match.buteurs.map(buteur => `${buteur.joueur} (${buteur.minute} min)`).join(', ')}</p>
+                        <p>Compétition : ${match.competition}</p>
+                        <p>Niveau : ${match.niveau}</p>
+                    `;
+                    document.getElementById('match-summary').style.display = 'block'; // Afficher le résumé
+                }
+
+                // Associer les événements
+                team1Select.onchange = updateMatchList;
+                team2Select.onchange = updateMatchList;
+            })
+            .catch(error => console.error('Erreur:', error));
+    </script>
+</body>
+</html>
