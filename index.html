@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-image: url('terrain.png');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            border: 1px solid black;
+        }
+        .player, .coach, .ball {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .player {
+            background-color: black;
+        }
+        .coach {
+            background-color: red;
+        }
+        .ball {
+            background-color: white;
+        }
+        .path {
+            position: absolute;
+            stroke-dasharray: 5, 5;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- Player -->
+        <div id="player" class="player" style="top: 70%; left: 10%;"></div>
+        <!-- Coach -->
+        <div id="coach" class="coach" style="top: 50%; left: 20%;"></div>
+        <!-- Ball -->
+        <div id="ball" class="ball" style="top: 70%; left: 10%;"></div>
+    </div>
+
+    <script>
+        // Player movement sequence
+        function movePlayer() {
+            const player = document.getElementById('player');
+            const ball = document.getElementById('ball');
+            const coach = document.getElementById('coach');
+            
+            // Step 1: Dribble to coach
+            player.style.transition = 'all 2s ease';
+            ball.style.transition = 'all 2s ease';
+            player.style.top = '55%';
+            player.style.left = '18%';
+            ball.style.top = '55%';
+            ball.style.left = '18%';
+
+            setTimeout(() => {
+                // Step 2: Player moves between the cones
+                player.style.transition = 'all 2s ease';
+                ball.style.transition = 'all 2s ease';
+                player.style.top = '40%';
+                player.style.left = '40%';
+                ball.style.top = '40%';
+                ball.style.left = '40%';
+
+                setTimeout(() => {
+                    // Step 3: Player passes to coach (ball moves to coach)
+                    ball.style.transition = 'all 1s ease';
+                    ball.style.top = coach.style.top;
+                    ball.style.left = coach.style.left;
+
+                    setTimeout(() => {
+                        // Step 4: Player runs towards the goal (run towards entrance of the penalty area)
+                        player.style.transition = 'all 2s ease';
+                        player.style.top = '20%';
+                        player.style.left = '55%';
+
+                        setTimeout(() => {
+                            // Step 5: Ball returns to player
+                            ball.style.transition = 'all 1s ease';
+                            ball.style.top = player.style.top;
+                            ball.style.left = player.style.left;
+
+                            setTimeout(() => {
+                                // Step 6: Player shoots (ball moves towards the goal)
+                                ball.style.transition = 'all 1s ease';
+                                ball.style.top = '0%';
+                                ball.style.left = '50%';
+                            }, 1000);
+                        }, 2000);
+                    }, 1000);
+                }, 2000);
+            }, 2000);
+        }
+
+        // Start animation on load
+        window.onload = movePlayer;
+    </script>
+</body>
+</html>
