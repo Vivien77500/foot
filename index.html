@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Football</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #terrain {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background-color: #a3d477;
+            border: 2px solid #333;
+        }
+        .joueur, .educateur, .ballon, .gardien {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+        }
+        .joueur {
+            background-color: black;
+            border-radius: 50%;
+        }
+        .educateur {
+            background-color: red;
+            border-radius: 50%;
+        }
+        .gardien {
+            background-color: green;
+            border-radius: 50%;
+        }
+        .ballon {
+            background-color: orange;
+            border-radius: 50%;
+        }
+        #goal {
+            position: absolute;
+            width: 100px;
+            height: 10px;
+            background-color: black;
+            top: 0;
+            left: 250px;
+        }
+        .coupelle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: yellow;
+        }
+        /* Positions initiales */
+        #joueur {
+            bottom: 30px;
+            left: 50px;
+        }
+        #educateur {
+            top: 200px;
+            left: 150px;
+        }
+        #gardien {
+            top: -5px;
+            left: 295px;
+        }
+        #ballon {
+            bottom: 25px;
+            left: 55px;
+        }
+        #coupelle1 {
+            top: 150px;
+            left: 250px;
+        }
+        #coupelle2 {
+            top: 150px;
+            left: 300px;
+        }
+        /* Animation */
+        .move {
+            animation: move 2s forwards;
+        }
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, -150px); }
+        }
+        .pass {
+            animation: pass 2s forwards;
+        }
+        @keyframes pass {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 50px); }
+        }
+        .run {
+            animation: run 1.5s forwards;
+        }
+        @keyframes run {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, -50px); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="terrain">
+    <div id="goal"></div>
+    <div id="joueur" class="joueur"></div>
+    <div id="educateur" class="educateur"></div>
+    <div id="ballon" class="ballon"></div>
+    <div id="gardien" class="gardien"></div>
+    <div id="coupelle1" class="coupelle"></div>
+    <div id="coupelle2" class="coupelle"></div>
+</div>
+
+<script>
+    let joueur = document.getElementById('joueur');
+    let ballon = document.getElementById('ballon');
+    let educateur = document.getElementById('educateur');
+    
+    // Étape 1 : Conduite de balle du joueur
+    function startMove() {
+        ballon.classList.add('move');
+        setTimeout(crochet, 2000);
+    }
+
+    // Étape 2 : Crochet à l'éducateur
+    function crochet() {
+        joueur.classList.add('move');
+        setTimeout(conduiteJoueur, 2000);
+    }
+
+    // Étape 3 : Conduite du joueur jusqu'aux coupelles
+    function conduiteJoueur() {
+        joueur.style.transform = 'translate(150px, -50px)';
+        setTimeout(passeEducateur, 2000);
+    }
+
+    // Étape 4 : Passe à l'éducateur
+    function passeEducateur() {
+        ballon.classList.add('pass');
+        setTimeout(courseEducateur, 2000);
+    }
+
+    // Étape 5 : Course de l'éducateur
+    function courseEducateur() {
+        educateur.classList.add('run');
+        setTimeout(remiseEtTir, 1500);
+    }
+
+    // Étape 6 : Remise et tir au but
+    function remiseEtTir() {
+        ballon.style.transform = 'translate(250px, -200px)';
+        // Animation du tir peut être ajoutée ici
+    }
+
+    // Lancer l'animation après 1 seconde
+    setTimeout(startMove, 1000);
+</script>
+
+</body>
+</html>
