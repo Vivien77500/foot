@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feuille Critérium U10</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-weight: bold; display: block; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; }
+        .form-group textarea { resize: vertical; height: 100px; }
+        .btn { background-color: #6fb98f; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background-color: #5aa980; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table, th, td { border: 1px solid #ccc; }
+        th, td { padding: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feuille Critérium U10</h1>
+        <form action="submit_form.php" method="POST">
+            <!-- Date -->
+            <div class="form-group">
+                <label for="date">Date :</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <!-- Catégorie -->
+            <div class="form-group">
+                <label for="categorie">Catégorie :</label>
+                <select id="categorie" name="categorie" required>
+                    <option value="">Sélectionnez</option>
+                    <option value="U9">U9</option>
+                    <option value="U10">U10</option>
+                    <option value="U11">U11</option>
+                    <option value="U12">U12</option>
+                    <option value="U13">U13</option>
+                </select>
+            </div>
+
+            <!-- Niveau -->
+            <div class="form-group">
+                <label for="niveau">Niveau :</label>
+                <select id="niveau" name="niveau" required>
+                    <option value="">Sélectionnez</option>
+                    <option value="Espoir">Espoir</option>
+                    <option value="Excellence">Excellence</option>
+                </select>
+            </div>
+
+            <!-- Équipe -->
+            <div class="form-group">
+                <label for="equipe_recevante">Équipe recevante :</label>
+                <input type="text" id="equipe_recevante" name="equipe_recevante" required>
+            </div>
+            <div class="form-group">
+                <label for="equipe_visiteur">Équipe visiteur :</label>
+                <input type="text" id="equipe_visiteur" name="equipe_visiteur" required>
+            </div>
+
+            <!-- Arbitres -->
+            <div class="form-group">
+                <label for="arbitre">Arbitre :</label>
+                <input type="text" id="arbitre" name="arbitre" required>
+            </div>
+            <div class="form-group">
+                <label for="assistant_1">Arbitre assistant 1 :</label>
+                <input type="text" id="assistant_1" name="assistant_1">
+            </div>
+            <div class="form-group">
+                <label for="assistant_2">Arbitre assistant 2 :</label>
+                <input type="text" id="assistant_2" name="assistant_2">
+            </div>
+
+            <!-- Licences et blessures -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Numéro de Licence</th>
+                        <th>Nom et Prénom</th>
+                        <th>Localisation de la blessure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 12 joueurs -->
+                    {% for i in range(1, 13) %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td><input type="text" name="licence_{{ i }}" maxlength="10"></td>
+                        <td><input type="text" name="nom_prenom_{{ i }}"></td>
+                        <td><input type="text" name="blessure_{{ i }}"></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Observations -->
+            <div class="form-group">
+                <label for="observations">Observations :</label>
+                <textarea id="observations" name="observations"></textarea>
+            </div>
+
+            <!-- Signatures -->
+            <div class="form-group">
+                <label for="responsable">Signature du responsable :</label>
+                <input type="text" id="responsable" name="responsable">
+            </div>
+            <div class="form-group">
+                <label for="arbitre_signature">Signature de l'arbitre :</label>
+                <input type="text" id="arbitre_signature" name="arbitre_signature">
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn">Soumettre</button>
+        </form>
+    </div>
+</body>
+</html>
